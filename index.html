@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$Enough - When enough is just fine</title>
+    <meta name="theme-color" content="#0f0f23" />
+    <meta property="og:title" content="$Enough - When enough is just fine" />
+    <meta property="og:description" content="Small profits sometimes, but it’s $Enough. A calm, modern meme coin site built with care." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://example.com" />
+    <link rel="preload" as="image" href="logo.png" />
+    <link rel="icon" href="logo.png" type="image/png" sizes="any" />
+    <link rel="shortcut icon" href="logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="logo.png" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0f0f23 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Scroll progress bar */
+        #progress { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            height: 3px; 
+            width: 0; 
+            background: linear-gradient(90deg, #64b5f6, #42a5f5); 
+            z-index: 50;
+            box-shadow: 0 0 12px rgba(100, 181, 246, 0.5);
+        }
+
+        .hero-logo-placeholder {
+            width: 300px;
+            height: 120px;
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(232, 232, 232, 0.7);
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            margin: 0 auto 24px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 300px;
+            height: auto;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+            transition: all 0.4s ease;
+            opacity: 0.9;
+        }
+
+        .logo-hero {
+            height: 300px;
+            width: auto;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35), 0 0 0 6px rgba(100,181,246,0.08) inset;
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+            opacity: 1;
+        }
+
+        .title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #64b5f6, #42a5f5, #2196f3, #1976d2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            opacity: 0.8;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.6;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .microcopy {
+            font-size: 0.95rem;
+            opacity: 0.55;
+            margin-top: -18px;
+            margin-bottom: 28px;
+            letter-spacing: 0.01em;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+            transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0) scale(var(--scale, 1));
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            color: white;
+            box-shadow: 0 8px 25px rgba(100, 181, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            --ty: -3px;
+            box-shadow: 0 12px 35px rgba(100, 181, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e8e8e8;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            --ty: -2px;
+        }
+
+        .stats-section {
+            background: rgba(100, 181, 246, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 60px 0;
+            text-align: center;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 181, 246, 0.5), transparent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(100, 181, 246, 0.1);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            background: rgba(100, 181, 246, 0.15);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #64b5f6;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .features-section {
+            margin: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .feature-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .feature-description {
+            line-height: 1.7;
+            opacity: 0.85;
+            font-size: 1.05rem;
+        }
+
+        .philosophy-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 60px 0;
+            text-align: center;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+        }
+
+        .philosophy-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .testimonial-section {
+            background: rgba(100, 181, 246, 0.05);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            opacity: 0.9;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #64b5f6;
+        }
+
+        /* Wave section divider */
+        .wave-divider { margin: 10px 0 50px; opacity: 0.5; }
+        .wave-divider svg { width: 100%; height: 60px; display: block; }
+
+        /* Twitter (X) mock feed */
+        .twitter-section { 
+            margin: 80px 0; 
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px; 
+            padding: 40px 24px; 
+            backdrop-filter: blur(10px);
+        }
+        .twitter-title { text-align: center; font-size: 2.2rem; margin-bottom: 24px; color: #64b5f6; font-weight: 700; }
+        .tweets { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 900px; margin: 0 auto; }
+        .tweet { 
+            background: rgba(15, 16, 32, 0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 16px; 
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+        }
+        .tweet:hover { transform: translateY(-2px); background: rgba(15,16,32,0.6); border-color: rgba(100,181,246,0.25); }
+        .tweet-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #64b5f6, #0f3460); display: inline-block; flex: 0 0 auto; box-shadow: 0 0 0 2px rgba(255,255,255,0.08); }
+        /* Distinct avatar colors for testimonials */
+        .testimonial-section .tweets .tweet:nth-child(1) .avatar {
+            background: radial-gradient(circle at 30% 30%, #64b5f6, #0f3460);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 12px rgba(100,181,246,0.35);
+        }
+        .testimonial-section .tweets .tweet:nth-child(2) .avatar {
+            background: radial-gradient(circle at 30% 30%, #b388ff, #4527a0);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 12px rgba(179,136,255,0.30);
+        }
+        .testimonial-section .tweets .tweet:nth-child(3) .avatar {
+            background: radial-gradient(circle at 30% 30%, #26c6da, #006064);
+            box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 0 12px rgba(38,198,218,0.30);
+        }
+        .tweet-meta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .tweet-name { font-weight: 700; }
+        .tweet-handle, .tweet-time { opacity: 0.6; font-size: 0.95rem; }
+        .tweet-text { line-height: 1.7; font-size: 1.02rem; opacity: 0.95; }
+        .tweet-actions { display: flex; gap: 18px; margin-top: 12px; opacity: 0.85; }
+        .tweet-btn { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            background: transparent; color: #e8e8e8; border: none; cursor: pointer; 
+            padding: 6px 8px; border-radius: 10px; 
+            transition: background .2s ease, transform .15s ease; 
+            font-size: 0.95rem;
+        }
+        .tweet-btn:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+        .tweet-icon { font-size: 1rem; }
+
+        /* Hero morphing blob */
+        .header { overflow: hidden; }
+        .hero-blob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: min(70vw, 720px);
+            height: min(70vw, 720px);
+            transform: translate(-50%, -50%);
+            background: radial-gradient(closest-side, rgba(100,181,246,0.45), rgba(100,181,246,0.12) 60%, rgba(15,15,35,0.0) 70%),
+                        conic-gradient(from 180deg at 50% 50%, rgba(66,165,245,0.35), rgba(33,150,243,0.25), rgba(25,118,210,0.35), rgba(66,165,245,0.35));
+            filter: blur(40px) saturate(120%);
+            opacity: 0.28;
+            border-radius: 35% 65% 60% 40% / 40% 40% 60% 60%;
+            animation: blobMorph 18s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        @keyframes blobMorph {
+            0% { border-radius: 35% 65% 60% 40% / 40% 40% 60% 60%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+            33% { border-radius: 60% 40% 35% 65% / 55% 35% 65% 45%; transform: translate(calc(-50% + 10px), calc(-50% + 6px)) rotate(60deg) scale(1.05); }
+            66% { border-radius: 45% 55% 65% 35% / 40% 60% 40% 60%; transform: translate(calc(-50% - 8px), calc(-50% - 10px)) rotate(120deg) scale(0.97); }
+            100% { border-radius: 35% 65% 60% 40% / 40% 40% 60% 60%; transform: translate(-50%, -50%) rotate(180deg) scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-blob { animation: none; }
+        }
+
+        /* Custom cursor */
+        body.custom-cursor { cursor: none; }
+        .cursor-dot, .cursor-ring {
+            position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000; display: none;
+        }
+        body.custom-cursor .cursor-dot, body.custom-cursor .cursor-ring { display: block; }
+        .cursor-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: #64b5f6; box-shadow: 0 0 8px rgba(100,181,246,0.7);
+            transform: translate(-50%, -50%);
+        }
+        .cursor-ring {
+            width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(100,181,246,0.7);
+            transform: translate(-50%, -50%);
+            transition: width .2s ease, height .2s ease, border-color .2s ease, background-color .2s ease;
+            background: rgba(100,181,246,0.08);
+        }
+        .cursor-ring.is-clicking { width: 36px; height: 36px; background: rgba(100,181,246,0.14); }
+        a:hover ~ .cursor-ring, .btn:hover ~ .cursor-ring, a:hover + .cursor-ring, .btn:hover + .cursor-ring {}
+        .cursor-hover { border-color: rgba(255,255,255,0.8) !important; background: rgba(255,255,255,0.08) !important; }
+
+        @media (pointer: coarse) {
+            body.custom-cursor { cursor: auto; }
+            .cursor-dot, .cursor-ring { display: none !important; }
+        }
+
+        /* Roadmap timeline */
+        .timeline-section {
+            margin: 80px 0;
+            background: rgba(100, 181, 246, 0.05);
+            border: 1px solid rgba(100,181,246,0.15);
+            border-radius: 24px;
+            padding: 50px 30px;
+        }
+        .timeline-title { text-align: center; font-size: 2.2rem; margin-bottom: 30px; color: #64b5f6; font-weight: 700; }
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; padding-left: 10px; }
+        .timeline::before { content: ""; position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: linear-gradient(#64b5f6, rgba(100,181,246,0.2)); }
+        .timeline-item { position: relative; margin: 28px 0; padding-left: 60px; opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+        .timeline-dot { position: absolute; left: 14px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle, #64b5f6, #42a5f5); box-shadow: 0 0 12px rgba(100,181,246,0.6); }
+        .timeline-item h3 { margin-bottom: 6px; font-size: 1.2rem; color: #e8f1ff; }
+        .timeline-item p { opacity: 0.85; }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.03;
+            animation: float 8s ease-in-out infinite;
+            color: #64b5f6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px 0;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+        }
+
+        .footer-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-tagline {
+            font-size: 0.95rem;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            .logo-hero { height: 180px; padding: 8px; border-radius: 12px; }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .header-actions .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 181, 246, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 181, 246, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="progress"></div>
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 15%; left: 8%; font-size: 2.5rem;">💙</div>
+        <div class="floating-element" style="top: 25%; right: 12%; font-size: 2rem;">✨</div>
+        <div class="floating-element" style="bottom: 35%; left: 15%; font-size: 3rem;">🌟</div>
+        <div class="floating-element" style="bottom: 25%; right: 8%; font-size: 2.2rem;">💎</div>
+        <div class="floating-element" style="top: 60%; left: 5%; font-size: 1.8rem;">🌊</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="hero-blob" aria-hidden="true"></div>
+            <div class="logo-container">
+                <img src="logo.png" alt="$Enough logo" class="logo logo-hero" loading="eager" decoding="async" />
+            </div>
+            <h1 class="title">$Enough</h1>
+            <p class="subtitle">When enough is just fine</p>
+            <p class="tagline">Because sometimes, that's all you need</p>
+            <div class="header-actions">
+                <a href="#" class="btn btn-primary">💙 Buy $Enough</a>
+                
+                <a href="#" class="btn btn-secondary">📱 Join Community</a>
+                <button class="btn btn-secondary" id="copy-contract">Copy contract</button>
+
+            </div>
+        </header>
+
+        <section class="stats-section">
+            <h2 class="section-title">The Numbers</h2>
+            <div class="wave-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0 C300,120 900,0 1200,120 L1200,0 L0,0 Z" fill="url(#grad1)"></path>
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#64b5f6" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#42a5f5" stop-opacity="0.25"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Days of Contentment</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Enough is Never Enough</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Fucks Given</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="philosophy-section">
+            <h2 class="section-title">The Philosophy</h2>
+            <div class="wave-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0 C300,120 900,0 1200,120 L1200,0 L0,0 Z" fill="url(#grad1)"></path>
+                </svg>
+            </div>
+            <p class="philosophy-text">
+                In a world obsessed with more, we choose to embrace the beauty of enough. 
+                $Enough isn't about settling—it's about finding contentment in what you have. 
+                Because sometimes, the most profound wisdom lies in knowing when to stop, 
+                when to breathe, and when to simply say "that's enough."
+            </p>
+        </section>
+
+        <section class="features-section">
+            <h2 class="section-title">Why $Enough?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💙</div>
+                    <h3 class="feature-title">Emotional Stability</h3>
+                    <p class="feature-description">
+                        Unlike other tokens that promise the moon, $Enough keeps you grounded. 
+                        No emotional rollercoasters, just steady, reliable contentment.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌊</div>
+                    <h3 class="feature-title">Peace of Mind</h3>
+                    <p class="feature-description">
+                        Sleep soundly knowing your investment is in something that understands 
+                        the value of moderation and inner peace.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-title">Authentic Community</h3>
+                    <p class="feature-description">
+                        Join fellow souls who appreciate the beauty of "enough." 
+                        No toxic positivity, just real people with realistic expectations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2 class="section-title">Ready to Find Your Enough?</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 40px; opacity: 0.9;">
+                Stop chasing more. Start embracing enough.
+            </p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">💙 Buy $Enough</a>
+                <a href="#" class="btn btn-secondary">📱 Join Community</a>
+                <button class="btn btn-secondary" id="copy-contract">Copy contract</button>
+            </div>
+        </section>
+
+        <section class="testimonial-section">
+            <h2 class="section-title">What People Are Saying</h2>
+            <div class="wave-divider" aria-hidden="true">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0 C300,120 900,0 1200,120 L1200,0 L0,0 Z" fill="url(#grad1)"></path>
+                </svg>
+            </div>
+            <div class="tweets">
+                <article class="tweet">
+                    <header class="tweet-header">
+                        <span class="avatar" aria-hidden="true"></span>
+                        <div class="tweet-meta">
+                            <span class="tweet-name">A Satisfied Soul</span>
+                            <span class="tweet-handle">@holder_since_day1</span>
+                        </div>
+                    </header>
+                    <p class="tweet-text">I was tired of the constant FOMO and anxiety from other tokens. $Enough reminded me it’s okay to take wins that let me sleep.</p>
+                </article>
+
+                <article class="tweet">
+                    <header class="tweet-header">
+                        <span class="avatar" aria-hidden="true"></span>
+                        <div class="tweet-meta">
+                            <span class="tweet-name">Another Content Human</span>
+                            <span class="tweet-handle">@rested_and_blessed</span>
+                        </div>
+                    </header>
+                    <p class="tweet-text">Finally, a project that doesn’t scream at me to 100x. Small profits, healthy headspace. I’m feeling $enough.</p>
+                </article>
+
+                <article class="tweet">
+                    <header class="tweet-header">
+                        <span class="avatar" aria-hidden="true"></span>
+                        <div class="tweet-meta">
+                            <span class="tweet-name">Quiet Trader</span>
+                            <span class="tweet-handle">@enough_enjoyer</span>
+                        </div>
+                    </header>
+                    <p class="tweet-text">Took coffee money today and closed the chart. Might be the first time I felt proud doing $enough.</p>
+                </article>
+            </div>
+        </section>
+
+        
+
+        <section class="timeline-section">
+            <h2 class="timeline-title">Roadmap</h2>
+            <div class="timeline" id="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3>Phase 1 — The Quiet Launch</h3>
+                    <p>Website, socials, token launch. No hype, just calm confidence.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3>Phase 2 — Enough Community</h3>
+                    <p>Organic growth, weekly reflections, and small wins worth celebrating.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3>Phase 3 — Tools for Contentment</h3>
+                    <p>Simple dashboards, alerts, and charts that don’t cause anxiety.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h3>Phase 4 — Partnerships</h3>
+                    <p>Collaborations with teams that value sustainability over hype.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p class="footer-text">&copy; 2024 $Enough - When enough is just fine</p>
+            <p class="footer-tagline">
+                Embrace the beauty of moderation 💙✨
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scroll progress bar
+            const progressBar = document.getElementById('progress');
+            const updateProgress = () => {
+                const h = document.documentElement;
+                const p = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+                progressBar.style.width = p + '%';
+            };
+            updateProgress();
+            window.addEventListener('scroll', updateProgress, { passive: true });
+
+            // Smooth scroll animation for stats
+            const observerOptions = {
+                threshold: 0.3,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Animate stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(card);
+            });
+
+            // Animate feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(40px)';
+                card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                observer.observe(card);
+            });
+
+            // Button click effects
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (this.tagName.toLowerCase() === 'a') e.preventDefault();
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Magnetic hover for buttons
+            const magneticButtons = document.querySelectorAll('.btn');
+            magneticButtons.forEach(btn => {
+                const strength = 18; // px
+                let hovering = false;
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.setProperty('--tx', (x / rect.width) * strength + 'px');
+                    btn.style.setProperty('--ty', (y / rect.height) * strength + 'px');
+                    btn.style.setProperty('--scale', 1.02);
+                    hovering = true;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.setProperty('--tx', '0px');
+                    btn.style.setProperty('--ty', '0px');
+                    btn.style.setProperty('--scale', 1);
+                    hovering = false;
+                });
+            });
+
+            // Parallax effect for floating elements
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelectorAll('.floating-element');
+                
+                parallax.forEach((element, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    element.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+
+            // Copy contract chip
+            const copyBtn = document.getElementById('copy-contract');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', async () => {
+                    const contract = 'YOUR_CONTRACT_ADDRESS';
+                    try {
+                        await navigator.clipboard.writeText(contract);
+                        const original = copyBtn.textContent;
+                        copyBtn.textContent = 'Copied ✓';
+                        setTimeout(() => copyBtn.textContent = original, 1300);
+                    } catch (err) { /* fail silently */ }
+                });
+            }
+
+            // Custom cursor (skips touch devices and reduced-motion)
+            const isCoarse = matchMedia('(pointer: coarse)').matches;
+            const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!isCoarse && !reduceMotion) {
+                document.body.classList.add('custom-cursor');
+                const dot = document.createElement('div'); dot.className = 'cursor-dot';
+                const ring = document.createElement('div'); ring.className = 'cursor-ring';
+                document.body.append(dot, ring);
+
+                let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+                const lerp = (a, b, n) => (1 - n) * a + n * b;
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX; mouseY = e.clientY;
+                    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                });
+                const animate = () => {
+                    ringX = lerp(ringX, mouseX, 0.15);
+                    ringY = lerp(ringY, mouseY, 0.15);
+                    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+                    requestAnimationFrame(animate);
+                };
+                animate();
+
+                window.addEventListener('mousedown', () => ring.classList.add('is-clicking'));
+                window.addEventListener('mouseup', () => ring.classList.remove('is-clicking'));
+
+                // Hover feedback on interactive elements
+                const hoverables = document.querySelectorAll('a, button, .btn');
+                hoverables.forEach(el => {
+                    el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
+                });
+            }
+
+            // Timeline reveal
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const tObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.25 });
+            timelineItems.forEach(i => tObserver.observe(i));
+        });
+    </script>
+</body>
+</html> 
