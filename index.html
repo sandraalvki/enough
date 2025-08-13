@@ -816,14 +816,27 @@
 
             // Button click effects
             document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    if (this.tagName.toLowerCase() === 'a') e.preventDefault();
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
+    btn.addEventListener('click', function(e) {
+        const isAnchor = this.tagName.toLowerCase() === 'a';
+        const href = isAnchor ? this.getAttribute('href') : null;
+
+        // Animate the click
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = '';
+
+            // Navigate if it’s an <a> with a valid link
+            if (isAnchor && href && href !== '#') {
+                window.location.href = href;
+            }
+        }, 150);
+
+        // Prevent jumping to top for "#" links
+        if (isAnchor && href === '#') {
+            e.preventDefault();
+        }
+    });
+});
 
             // Magnetic hover for buttons
             const magneticButtons = document.querySelectorAll('.btn');
